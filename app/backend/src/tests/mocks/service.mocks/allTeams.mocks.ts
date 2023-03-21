@@ -97,7 +97,7 @@ const modelTeams = [
   }
 ]
 
-const serviceResult = [
+const serverResult = [
   { id: 1, teamName: 'Avaí/Kindermann' },
   { id: 2, teamName: 'Bahia' },
   { id: 3, teamName: 'Botafogo' },
@@ -118,5 +118,5 @@ const serviceResult = [
 
 export {
   modelTeams,
-  serviceResult
+  serverResult
 }
