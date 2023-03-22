@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import loginJoi from '../utils/joiLogin';
 
-export default class LoginValidation {
+export default class LoginValidationMiddleware {
   public validateLogin = (req: Request, res: Response, next: NextFunction) => {
     const user = req.body;
     const { error } = loginJoi.validate(user);

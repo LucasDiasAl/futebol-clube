@@ -22,7 +22,9 @@ export default class UsersService {
     if (!foundUser) return this._invalidInputs;
     const verifyPass = await bcrypt.compare(user.password, foundUser.password) || null;
     if (!verifyPass) return this._invalidInputs;
-    const token = this.jtwFuncs.encode({ id: foundUser.id, email: foundUser.email });
+    const token = this.jtwFuncs.encode(
+      { id: foundUser.id, email: foundUser.email, role: foundUser.role },
+    );
     return { type: 'sucess', status: 200, message: token };
   };
 }
