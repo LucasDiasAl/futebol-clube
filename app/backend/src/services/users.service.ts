@@ -13,17 +13,16 @@ type ResponseType = {
   message: string,
 };
 export default class UsersService {
+  protected _invalidInputs = { type: 'error', status: 401, message: 'Invalid email or password' };
   constructor(private usersModel = UsersModel, private jtwFuncs = new JWT()) { }
 
   public login = async (user: UserType): Promise<ResponseType> => {
     const result = await this.usersModel.findOne({ where: { email: user.email } });
     const foundUser = result?.dataValues;
-    if (!foundUser) return { type: 'error', status: 404, message: 'User not found' };
-    const verifyPass = await bcrypt.compare(user.password, foundUser.password);
-    if (verifyPass) {
-      const token = this.jtwFuncs.encode({ id: foundUser.id, email: foundUser.email });
-      return { type: 'sucess', status: 200, message: token };
-    }
-    return { type: 'error', status: 404, message: 'Incorrect Email or Password' };
+    if (!foundUser) return this._invalidInputs;
+    const verifyPass = await bcrypt.compare(user.password, foundUser.password) || null;
+    if (!verifyPass) return this._invalidInputs;
+    const token = this.jtwFuncs.encode({ id: foundUser.id, email: foundUser.email });
+    return { type: 'sucess', status: 200, message: token };
   };
 }
