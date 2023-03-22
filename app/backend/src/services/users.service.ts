@@ -16,7 +16,8 @@ export default class UsersService {
   constructor(private usersModel = UsersModel, private jtwFuncs = new JWT()) { }
 
   public login = async (user: UserType): Promise<ResponseType> => {
-    const foundUser = await this.usersModel.findOne({ where: { email: user.email } });
+    const result = await this.usersModel.findOne({ where: { email: user.email } });
+    const foundUser = result?.dataValues;
     if (!foundUser) return { type: 'error', status: 404, message: 'User not found' };
     const verifyPass = await bcrypt.compare(user.password, foundUser.password);
     if (verifyPass) {

@@ -12,6 +12,7 @@ export default class UsersController {
       }
       return res.status(status).json({ token: message });
     } catch (e) {
+      console.log(e);
       return res.status(500).json({ message: e });
     }
   };
