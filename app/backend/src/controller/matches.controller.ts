@@ -36,12 +36,25 @@ export default class MatchesController {
   public updateMatch = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
-      console.log(typeof id, id);
       const matchExists = await this.service.getMatchById(id);
       if (!matchExists) return res.status(404).json({ message: 'Match not found' });
       const matchGoals = req.body;
       await this.service.updateMatch(id, matchGoals);
       return res.status(200).json(matchGoals);
+    } catch (e) {
+      return res.status(500).json({ message: this.internalServerError });
+    }
+  };
+
+  public createMatch = async (req: Request, res: Response) => {
+    try {
+      const match = req.body;
+      const createdMatch = await this.service.createMatch(match);
+      console.log(createdMatch);
+      if (!createdMatch.type) {
+        return res.status(createdMatch.status).json({ message: createdMatch.message });
+      }
+      return res.status(createdMatch.status).json(createdMatch.message);
     } catch (e) {
       return res.status(500).json({ message: this.internalServerError });
     }

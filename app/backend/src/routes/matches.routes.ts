@@ -10,5 +10,6 @@ const tokenValid = new TokenValid();
 router.patch('/:id', tokenValid.tokenValidation, matchesController.updateMatch);
 router.patch('/:id/finish', tokenValid.tokenValidation, matchesController.finishMatche);
 router.get('/', matchesController.getAll);
+router.post('/', tokenValid.tokenValidation, matchesController.createMatch);
 
 export default router;
