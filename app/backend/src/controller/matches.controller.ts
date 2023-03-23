@@ -21,4 +21,14 @@ export default class MatchesController {
       return res.status(500).json({ message: 'Internal server error' });
     }
   };
+
+  public finishMatche = async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      await this.service.finishMatch(id);
+      return res.status(200).json({ message: 'Finished' });
+    } catch (e) {
+      return res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 }
