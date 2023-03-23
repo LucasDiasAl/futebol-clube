@@ -1,6 +1,10 @@
 import MatchesModel from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamsModel';
 
+type MatchGoals = {
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+};
 export default class MatchesService {
   constructor(private _matchesModel = MatchesModel) {
   }
@@ -11,6 +15,11 @@ export default class MatchesService {
         { model: Teams, as: 'awayTeam', attributes: ['teamName'] }],
   })
     .then((data: MatchesModel[]) => data.map((elem: MatchesModel) => elem.dataValues));
+
+  public getMatchById = async (id: string | number): Promise<MatchesModel[]> => this._matchesModel
+    .findAll({
+      where: { id },
+    });
 
   public getMatchesByProg = (progress: string): Promise<MatchesModel[]> => this._matchesModel
     .findAll({
@@ -28,6 +37,17 @@ export default class MatchesService {
           id: idMatch,
         },
       },
+    );
+    await Promise.all(promise);
+  };
+
+  public updateMatch = async (idMatch: string, goalsObj: MatchGoals): Promise<void> => {
+    const promise = await this._matchesModel.update(
+      {
+        homeTeamGoals: goalsObj.homeTeamGoals,
+        awayTeamGoals: goalsObj.awayTeamGoals,
+      },
+      { where: { id: idMatch } },
     );
     await Promise.all(promise);
   };
