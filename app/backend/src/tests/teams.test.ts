@@ -1,16 +1,16 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
+
+import {app} from '../app';
+import Teams from '../database/models/TeamsModel';
+
+import {modelTeams, serverResult} from './mocks/allTeamsMocks'
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import { app } from '../app';
-import Teams from '../database/models/TeamsModel';
-
-import { modelTeams, serverResult } from './mocks/allTeams.mocks'
-
 chai.use(chaiHttp);
 
-const { expect } = chai;
+const {expect} = chai;
 
 describe('Testa as rotas `/teams`', () => {
 

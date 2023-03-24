@@ -19,12 +19,24 @@ export default class MatchesService {
   ) {
   }
 
+  private refactorModelResponse = (data: MatchesModel[]) => data.map(({
+    dataValues: {
+      homeTeam: { dataValues: homeTeam },
+      awayTeam: { dataValues: awayTeam },
+      ...restOfInfo
+    },
+  }: MatchesModel): MatchesModel[] => ({
+    ...restOfInfo,
+    homeTeam,
+    awayTeam,
+  }));
+
   public getMatches = async (): Promise<MatchesModel[]> => this._matchesModel.findAll({
     include:
       [{ model: Teams, as: 'homeTeam', attributes: ['teamName'] },
         { model: Teams, as: 'awayTeam', attributes: ['teamName'] }],
-  })
-    .then((data: MatchesModel[]) => data.map((elem: MatchesModel) => elem.dataValues));
+  }).then((response: MatchesModel[]) => this
+    .refactorModelResponse(response) as unknown as MatchesModel[]);
 
   public getMatchById = async (id: string | number): Promise<MatchesModel[]> => this._matchesModel
     .findAll({
@@ -37,7 +49,8 @@ export default class MatchesService {
         [{ model: Teams, as: 'homeTeam', attributes: ['teamName'] },
           { model: Teams, as: 'awayTeam', attributes: ['teamName'] }],
       where: { inProgress: JSON.parse(progress) },
-    }).then((data: MatchesModel[]) => data.map((elem: MatchesModel) => elem.dataValues));
+    }).then((response: MatchesModel[]) => this
+      .refactorModelResponse(response) as unknown as MatchesModel[]);
 
   public finishMatch = async (idMatch: string): Promise<void> => {
     const promise = await this._matchesModel.update(
@@ -86,12 +99,7 @@ export default class MatchesService {
 
 // const teste = async () => {
 //   const team = new MatchesService();
-//   console.log(await team.createMatch({
-//     homeTeamId: 8,
-//     awayTeamId: 8,
-//     homeTeamGoals: 2,
-//     awayTeamGoals: 2,
-//   }));
+//   console.log(await team.getMatches());
 // };
 //
 // teste();
