@@ -25,12 +25,3 @@ export default class JWT {
     }
   };
 }
-
-// const teste = async () => {
-//   const team = new JWT();
-//   console.log(await team.decode(
-//     'eJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBhZG1pbi5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2Nzk1MDEwMTF9.ojk1xl4TgCwA-yhgRAtsO1TctXdMsEY5wdELaKLRCmY',
-//   ));
-// };
-//
-// teste();

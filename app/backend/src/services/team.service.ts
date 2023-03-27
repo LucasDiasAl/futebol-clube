@@ -10,10 +10,3 @@ export default class TeamService {
     return result?.dataValues || null;
   };
 }
-
-// const teste = async () => {
-//   const team = new TeamService();
-//   console.log(await team.getTeamById(999));
-// };
-//
-// teste();

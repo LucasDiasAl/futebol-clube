@@ -50,7 +50,6 @@ export default class MatchesController {
     try {
       const match = req.body;
       const createdMatch = await this.service.createMatch(match);
-      console.log(createdMatch);
       if (!createdMatch.type) {
         return res.status(createdMatch.status).json({ message: createdMatch.message });
       }
