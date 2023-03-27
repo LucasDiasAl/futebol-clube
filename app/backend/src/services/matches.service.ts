@@ -1,6 +1,7 @@
 import MatchesModel from '../database/models/MatchesModel';
 import Teams from '../database/models/TeamsModel';
 import TeamService from './team.service';
+import IMatches from '../interfaces/IMatches';
 
 type MatchGoals = {
   homeTeamGoals: number,
@@ -31,26 +32,26 @@ export default class MatchesService {
     awayTeam,
   }));
 
-  public getMatches = async (): Promise<MatchesModel[]> => this._matchesModel.findAll({
+  public getMatches = async (): Promise<IMatches[]> => this._matchesModel.findAll({
     include:
       [{ model: Teams, as: 'homeTeam', attributes: ['teamName'] },
         { model: Teams, as: 'awayTeam', attributes: ['teamName'] }],
   }).then((response: MatchesModel[]) => this
-    .refactorModelResponse(response) as unknown as MatchesModel[]);
+    .refactorModelResponse(response) as unknown as IMatches[]);
 
   public getMatchById = async (id: string | number): Promise<MatchesModel[]> => this._matchesModel
     .findAll({
       where: { id },
     });
 
-  public getMatchesByProg = (progress: string): Promise<MatchesModel[]> => this._matchesModel
+  public getMatchesByProg = (progress: string): Promise<IMatches[]> => this._matchesModel
     .findAll({
       include:
         [{ model: Teams, as: 'homeTeam', attributes: ['teamName'] },
           { model: Teams, as: 'awayTeam', attributes: ['teamName'] }],
       where: { inProgress: JSON.parse(progress) },
     }).then((response: MatchesModel[]) => this
-      .refactorModelResponse(response) as unknown as MatchesModel[]);
+      .refactorModelResponse(response) as unknown as IMatches[]);
 
   public finishMatch = async (idMatch: string): Promise<void> => {
     const promise = await this._matchesModel.update(
@@ -96,10 +97,3 @@ export default class MatchesService {
     };
   };
 }
-
-// const teste = async () => {
-//   const team = new MatchesService();
-//   console.log(await team.getMatches());
-// };
-//
-// teste();

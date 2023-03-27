@@ -1,7 +1,16 @@
-import IMatches from "../../interfaces/IMatches";
-
-
-const mockFindAll: IMatches[] = [
+type Matches = {
+  dataValues: {
+    id: number,
+    homeTeamId: number,
+    homeTeamGoals: number,
+    awayTeamId: number,
+    awayTeamGoals: number,
+    inProgress: boolean,
+    homeTeam: { dataValues: { teamName: string } },
+    awayTeam: { dataValues: { teamName: string } }
+  }
+};
+const mockFindAll: Matches[] = [
   {
     dataValues: {
       id: 1,
@@ -34,7 +43,7 @@ const mockGETAllResponse = mockFindAll.map((
       awayTeam: {dataValues: awayTeam},
       ...restOfInfo
     }
-  }: IMatches) => ({...restOfInfo, homeTeam, awayTeam}))
+  }: Matches) => ({...restOfInfo, homeTeam, awayTeam}))
 
 const mockTeamsFindAllProgFalse = [
   {
@@ -69,7 +78,7 @@ const mockGETAllResponseByProg = mockTeamsFindAllProgFalse.map((
       awayTeam: {dataValues: awayTeam},
       ...restOfInfo
     }
-  }: IMatches) => ({...restOfInfo, homeTeam, awayTeam}))
+  }: Matches) => ({...restOfInfo, homeTeam, awayTeam}))
 
 export {
   mockFindAll,
